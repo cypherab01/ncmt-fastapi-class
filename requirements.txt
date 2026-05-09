@@ -3,5 +3,7 @@ sqlalchemy
 greenlet
 alembic
 asyncpg
+bcrypt
+pyjwt
 
 black

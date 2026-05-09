@@ -6,7 +6,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy.dialects.postgresql import UUID
 
 from app.db.base import Base
-from app.db.mixin_id import MixinID
+from app.db.mixins import MixinID
 
 
 class User(Base, MixinID):
