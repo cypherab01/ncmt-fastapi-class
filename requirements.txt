@@ -3,3 +3,5 @@ sqlalchemy
 greenlet
 alembic
 asyncpg
+
+black
