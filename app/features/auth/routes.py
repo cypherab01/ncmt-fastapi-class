@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 
+from app.core.config import settings
 from app.features.auth.dependencies import get_auth_service
 from app.features.auth.schemas import (
     RegisterRequest,
@@ -46,6 +47,7 @@ async def register_user(
 )
 async def login_user(
     data: LoginRequest,
+    response: Response,
     auth_service: AuthService = Depends(get_auth_service),
 ):
     try:
@@ -56,6 +58,16 @@ async def login_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
         )
+
+    # ✅ Set cookie here
+    response.set_cookie(
+        key="access_token",
+        value=token.token,
+        httponly=True,
+        secure=True,  # use True in production (HTTPS)
+        samesite="lax",  # "strict" if you want tighter security
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,  # match your JWT expiry
+    )
 
     return LoginResponse(
         token=token.token,
